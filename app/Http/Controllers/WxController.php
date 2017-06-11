@@ -64,11 +64,13 @@ class WxController extends Controller
     public function follow($message) {
         $user_service = $this->app->user;
         $fans = $user_service->get($message->FromUserName);
-
+            //关注后写入数据库
+            //如果以前曾经关注过,状态改为1
+            //如果状态已经为1,什么也没发生
         return new Text(['content'=>"您好！$fans->nickname,  欢迎关注我!"]);
     }
 
     public function un_follow($message) {
-
+        //状态改为0
     }
 }
