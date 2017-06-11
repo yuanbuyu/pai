@@ -12,5 +12,11 @@
 */
 
 Route::get('/', function () {
+    return phpinfo();
     return view('welcome');
 });
+
+Route::any('wx' , 'WxController@index');
+Route::get('login' , 'UserController@login');
+Route::get('logout' , 'UserController@logout');
+Route::get('center' , 'UserController@center');
