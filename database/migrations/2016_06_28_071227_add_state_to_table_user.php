@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersTable extends Migration
+class AddStateToTableUser extends Migration
 {
     /**
      * Run the migrations.
@@ -12,11 +12,8 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->increments('uid');
-            $table->char('openid' , 32);
-            $table->string('name');
-            $table->integer('subtime');
+        Schema::table('users', function (Blueprint $table) {
+            $table->boolean('state')->default(1);
         });
     }
 
@@ -27,6 +24,9 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::drop('users');
+        Schema::table('users', function (Blueprint $table) {
+            //
+            $table->dropColumn('state');
+        });
     }
 }
