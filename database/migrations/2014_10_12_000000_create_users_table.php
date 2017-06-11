@@ -16,7 +16,13 @@ class CreateUsersTable extends Migration
             $table->increments('uid');
             $table->char('openid' , 32);
             $table->string('name');
-            $table->integer('subtime');
+            $table->string('nickname');
+            $table->char('password','32');
+            $table->char('phone','11');
+            $table->string('head_pic');
+            $table->integer('create_time');
+            $table->integer('update_time');
+            $table->tinyInteger('status')->default(1);
         });
     }
 
