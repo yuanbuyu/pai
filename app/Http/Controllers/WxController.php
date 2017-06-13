@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use EasyWeChat\Support\Log;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use EasyWeChat\Foundation\Application;
 use EasyWeChat\Message\Text;
-use App\User;
+use Illuminate\Support\Facades\DB;
 
 class WxController extends Controller
 {
@@ -64,13 +65,34 @@ class WxController extends Controller
     public function follow($message) {
         $user_service = $this->app->user;
         $fans = $user_service->get($message->FromUserName);
-            //关注后写入数据库
-            //如果以前曾经关注过,状态改为1
-            //如果状态已经为1,什么也没发生
-        return new Text(['content'=>"您好！$fans->nickname,  欢迎关注我!"]);
+        $data = [
+            'openid'   => $message->FromUserName,
+            'nickname' => $fans->nickname,
+            'head_pic' => $fans->headimgurl,
+            'status' => 1,
+        ];
+        $user_info = DB::table('users')->where('openid', $data['openid'])->first();
+        //已经存在用户信息了,修改用户更新时间
+        if ($user_info) {
+            $data['update_time'] = time();
+            $res = DB::table('users')->where('openid', $data['openid'])->update($data);
+        }
+        //新关注的用户
+        else {
+            $data['create_time'] = time();
+            $res = DB::table('users')->where('openid', $data['openid'])->insert($data);
+        }
+        if (!$res) {
+            return new Text(['content'=>"您好！$fans->nickname,  信息读取失败!请重新关注!!"]);
+        }
+        return new Text(['content'=>"您好！$fans->nickname,  欢迎关注尚鼎商城!"]);
     }
 
     public function un_follow($message) {
-        //状态改为0
+       $openid = $message->FromUserName;
+       $res = DB::table('users')->where('openid', $openid)->update(['status'=>0]);
+       if (!$res) {
+           Log::error($openid . "un_follow Error" . date('Y-m-d H:i:s'));
+       }
     }
 }
