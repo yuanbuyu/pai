@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\WeChat;
 
 use Illuminate\Http\Request;
 
@@ -15,21 +15,17 @@ class UserController extends Controller
     public function __construct() {
         $options = [
             'debug'  => true,
-            'app_id' => 'wxb3f8abd89667aa89',
-            'secret' => 'fd63b31f7420fc824353c397c32e3594',
-            'token'  => 'jkdslajfdksaf',
-
-
-            // 'aes_key' => null, // 可选
-
+            'app_id' => 'wx1921e49262996ed3',
+            'secret' => 'd3e192c0b49f6a3fde1e61c2e795638d',
+            'token'  => 'yuanbuyu',
             'log' => [
                 'level' => 'debug',
-                'file'  => 'D:/www/20160328/fenxiao/public/wechat.log', // XXX: 绝对路径！！！！
+                'file'  => 'D:/xampp/htdocs/pai/public/wechat.log', // XXX: 绝对路径！！！！
             ],
             'guzzle' => [
                 'timeout' => 5.0,// 超时时间（秒）
                 'verify' => false,// 关掉 SSL 认证（强烈不建议！！！）
-                ],
+            ],
             'oauth' => [
                   'scopes'   => ['snsapi_userinfo'],
                   'callback' => '/login',
@@ -52,8 +48,8 @@ class UserController extends Controller
     }
 
     // 检测session
-    public function center(Request $req) {
-        if( !$req->session()->has('user') ) {
+    public function center(Request $request) {
+        if( !$request->session()->has('user') ) {
             $oauth = $this->app->oauth;
             return $oauth->redirect();
         }
