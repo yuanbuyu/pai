@@ -12,11 +12,12 @@
 */
 
 Route::get('/', function () {
-    return phpinfo();
     return view('welcome');
 });
 
-Route::any('wx' , 'WxController@index');
-Route::get('login' , 'UserController@login');
-Route::get('logout' , 'UserController@logout');
-Route::get('center' , 'UserController@center');
+Route::any('wx' , 'WeChat\WxController@index');
+Route::get('login' , 'WeChat\UserController@login');
+Route::get('logout' , 'WeChat\UserController@logout');
+Route::get('center' , 'WeChat\UserController@center');
+Route::get('menu' , 'WeChat\MenuController@read_menu');
+Route::get('add_menu' , 'WeChat\MenuController@add_menu');
