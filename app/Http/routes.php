@@ -15,9 +15,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+/*微信相关的路由*/
 Route::any('wx' , 'WeChat\WxController@index');
 Route::get('login' , 'WeChat\UserController@login');
 Route::get('logout' , 'WeChat\UserController@logout');
-Route::get('center' , 'WeChat\UserController@center');
-Route::get('menu' , 'WeChat\MenuController@read_menu');
-Route::get('add_menu' , 'WeChat\MenuController@add_menu');
+Route::any('center' , 'WeChat\UserController@center');
+Route::any('user_center' , 'WeChat\UserController@user_center');
+Route::get('helpme', function () {
+    return view('wechat/helpme');
+});
