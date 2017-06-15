@@ -15,7 +15,8 @@ class WxController extends Controller
 {
     protected $app = null;
 
-    public function __construct() {
+    public function __construct()
+    {
         
         $options = [
             'debug'  => true,
@@ -48,7 +49,7 @@ class WxController extends Controller
         $server = $this->app->server;
 
         // 在微信服务器上监听事件/消息
-        $server->setMessageHandler(function ($message) {
+        $server->setMessageHandler(function ($message){
             if($message->MsgType == 'event' && $message->Event=='subscribe') {
                 return $this->follow($message);
             } else if($message->MsgType == 'event' && $message->Event=='unsubscribe') {
@@ -62,7 +63,8 @@ class WxController extends Controller
         return $response;   
     }
 
-    public function follow($message) {
+    public function follow($message)
+    {
         $user_service = $this->app->user;
         $fans = $user_service->get($message->FromUserName);
         $data = [
@@ -88,7 +90,8 @@ class WxController extends Controller
         return new Text(['content'=>"您好！$fans->nickname,  欢迎关注尚鼎商城!"]);
     }
 
-    public function un_follow($message) {
+    public function un_follow($message)
+    {
        $openid = $message->FromUserName;
        $res = DB::table('users')->where('openid', $openid)->update(['status'=>0]);
        if (!$res) {
